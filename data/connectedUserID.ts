@@ -1,0 +1,1 @@
+export const connectedUserID = 'Alessandro_Coscarelli_00';

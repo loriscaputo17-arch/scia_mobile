@@ -1,0 +1,13 @@
+{
+  "name": "Name",
+  "phone": "Phone",
+    "role": "Ruolo",
+    "rank": "Rank",
+    "ship": "Ship",
+    "leader": "Leader",
+    "add_plant": "Add system",
+    "save":"Save",
+    "system": "System",
+    "team_members": "Team"
+}
+  

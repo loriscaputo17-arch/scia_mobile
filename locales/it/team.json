@@ -1,0 +1,13 @@
+{
+  "name": "Nome",
+  "phone": "Telefono",
+  "role": "Ruolo",
+  "rank": "Grado",
+  "ship": "Nave",
+  "leader": "Caposquadra",
+  "add_plant": "Aggiungi impianto",
+  "save": "Salva",
+  "system": "Impianto",
+  "team_members": "Squadras"
+}
+  

@@ -18,13 +18,17 @@ export const logout = async () => {
 };
 
 export const loginPin = async (pin: string) => {
-  const res = await api.post("/auth/login-pin", { pin });
-
-  const token = res.data.token;
-  if (token) {
-    await AsyncStorage.setItem("authToken", token);
+  console.log("API URL:", process.env.EXPO_PUBLIC_API_URL);
+  console.log("Calling loginPin with pin:", pin);
+  try {
+    const res = await api.post("/auth/login-pin", { pin });
+    console.log("Response:", res.data);
+    const token = res.data.token;
+    if (token) await AsyncStorage.setItem("authToken", token);
+    return res;
+  } catch (err: any) {
+    console.log("Error:", err.message, err.response?.status, err.response?.data);
+    throw err;
   }
-
-  return res;
 };
 

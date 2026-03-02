@@ -1,0 +1,60 @@
+{
+  "filters": "Filters",
+  "state": "Status",
+  "execution": "Execution",
+  "expiry_date": "Expiry Date",
+  "notes": "Notes",
+  "classification": "Classification",
+
+  "expired": "Expired",
+  "expiring": "Expiring",
+  "recently_expired": "Recently Expired",
+  "active": "Active",
+  "paused": "Paused",
+  "scheduled": "Scheduled",
+
+  "frequency": "Frequency",
+  "recurrence": {
+    "settimanale": "Weekly",
+    "bisettimanale": "Bi-weekly",
+    "mensile": "Monthly",
+    "bimestrale": "Bi-monthly",
+    "trimestrale": "Quarterly",
+    "semestrale": "Semi-Annual",
+    "annuale": "Annual",
+    "biennale": "Biennial",
+    "triennale": "Triennial"
+  },
+
+  "level": "Level",
+  "levels": {
+    "aBordo": "On board",
+    "inBanchina": "Dockside",
+    "inBacino": "Dry dock",
+    "fornitoreEsterno": "External supplier"
+  },
+
+  "assignment_team": "Assigned team",
+  "teams": {
+    "operatori": "Operators",
+    "equipaggio": "Crew",
+    "manutentori": "Technicians",
+    "comando": "Command"
+  },
+
+  "system": "System",
+  "select_systems": "Select systems",
+
+  "spare_parts": "Spare Parts",
+  "spares": {
+    "richiesti": "Requested",
+    "richiestiDisponibili": "Available",
+    "richiestiNonDisponibili": "Unavailable",
+    "richiestiInEsaurimento": "Low stock"
+  },
+
+  "confirm": "Confirm",
+  "reset_filters": "Reset Filters",
+  "active_filters": "Active filters",
+  "no_filters": "No filters applied"
+}

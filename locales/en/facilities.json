@@ -1,0 +1,24 @@
+{
+  "facilities": "ESWBS Structure",
+  "facilities_search": "Search by plant name...",
+  "element_not_found": "Element not found",
+  "system": "System",
+  "component": "Component",
+  "builder": "Builder",
+  "image": "Image",
+  "motorcycles_hours": "Motorcycle Hour",
+  "3D_model": "3D Model",
+  "maintenance_status": "Maintenance status",
+  "spare_parts_status": "Spare parts status",
+  "description": "Description",
+  "details": "Details",
+  "exploded": "Exploded",
+  "technical_diagram": "Technical diagram",
+  "photographic_notes": "Photographic notes",
+  "see_history": "See history",
+  "vocal_notes": "Vocal notes",
+  "text_notes": "Text notes",
+  "plant_filter": "Plant filter",
+  "confirm": "Confirm"
+}
+  

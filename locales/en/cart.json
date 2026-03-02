@@ -1,0 +1,9 @@
+{
+  "cart": "Cart",
+  "name": "Name",
+    "part_number": "Part Number",
+    "supplier": "Supplier",
+    "quantity": "Quantity",
+    "actions": "Actions"
+}
+  

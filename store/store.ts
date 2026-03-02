@@ -17,7 +17,7 @@ import locationsReducer from "../features/locations/locationsSlice";
 import maintenanceTypesReducer from "../features/maintenanceTypes/maintenanceTypesSlice";
 import shipFilesReducer from "../features/shipFiles/shipFilesSlice";
 import failuresReducer from "../features/failures/failuresSlice";
-
+import pendingActionsReducer from "../features/pendingActions/pendingActionsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -39,8 +39,12 @@ export const store = configureStore({
     maintenanceTypes: maintenanceTypesReducer,
     shipFiles: shipFilesReducer,
     failures: failuresReducer,
+    pendingActions: pendingActionsReducer,
   },
 });
+
+// TODO: riabilitare redux-persist per build finale
+// export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

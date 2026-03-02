@@ -1,0 +1,60 @@
+{
+  "filters": "Filtri",
+  "state": "Stato",
+  "execution": "Esecuzione",
+  "expiry_date": "Data di Scadenza",
+  "notes": "Note",
+  "classification": "Classificazione",
+
+  "expired": "Scaduta",
+  "expiring": "In scadenza",
+  "recently_expired": "Scaduta da poco",
+  "active": "Attiva",
+  "paused": "In pausa",
+  "scheduled": "Programmata",
+
+  "frequency": "Ricorrenza",
+  "recurrence": {
+    "settimanale": "Settimanale",
+    "bisettimanale": "Bisettimanale",
+    "mensile": "Mensile",
+    "bimestrale": "Bimestrale",
+    "trimestrale": "Trimestrale",
+    "semestrale": "Semestrale",
+    "annuale": "Annuale",
+    "biennale": "Biennale",
+    "triennale": "Triennale"
+  },
+
+  "level": "Livello",
+  "levels": {
+    "aBordo": "A bordo",
+    "inBanchina": "In banchina",
+    "inBacino": "In bacino",
+    "fornitoreEsterno": "Fornitore esterno"
+  },
+
+  "assignment_team": "Squadra assegnata",
+  "teams": {
+    "operatori": "Operatori",
+    "equipaggio": "Equipaggio",
+    "manutentori": "Manutentori",
+    "comando": "Comando"
+  },
+
+  "system": "Sistema",
+  "select_systems": "Seleziona sistemi",
+
+  "spare_parts": "Ricambi",
+  "spares": {
+    "richiesti": "Richiesti",
+    "richiestiDisponibili": "Disponibili",
+    "richiestiNonDisponibili": "Non disponibili",
+    "richiestiInEsaurimento": "In esaurimento"
+  },
+
+  "confirm": "Conferma",
+  "reset_filters": "Reset filtri",
+  "active_filters": "Filtri attivi",
+  "no_filters": "Nessun filtro applicato"
+}

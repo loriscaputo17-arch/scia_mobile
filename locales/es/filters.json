@@ -1,0 +1,60 @@
+{
+  "filters": "Filtros",
+  "state": "Estado",
+  "execution": "Ejecución",
+  "expiry_date": "Fecha de vencimiento",
+  "notes": "Notas",
+  "classification": "Clasificación",
+
+  "expired": "Vencida",
+  "expiring": "Por vencer",
+  "recently_expired": "Vencida recientemente",
+  "active": "Activa",
+  "paused": "Pausada",
+  "scheduled": "Programada",
+
+  "frequency": "Frecuencia",
+  "recurrence": {
+    "settimanale": "Semanal",
+    "bisettimanale": "Cada dos semanas",
+    "mensile": "Mensual",
+    "bimestrale": "Bimestral",
+    "trimestrale": "Trimestral",
+    "semestrale": "Semestral",
+    "annuale": "Anual",
+    "biennale": "Bienal",
+    "triennale": "Trienal"
+  },
+
+  "level": "Nivel",
+  "levels": {
+    "aBordo": "A bordo",
+    "inBanchina": "En muelle",
+    "inBacino": "En dique seco",
+    "fornitoreEsterno": "Proveedor externo"
+  },
+
+  "assignment_team": "Equipo asignado",
+  "teams": {
+    "operatori": "Operadores",
+    "equipaggio": "Tripulación",
+    "manutentori": "Técnicos",
+    "comando": "Comando"
+  },
+
+  "system": "Sistema",
+  "select_systems": "Seleccionar sistemas",
+
+  "spare_parts": "Repuestos",
+  "spares": {
+    "richiesti": "Solicitados",
+    "richiestiDisponibili": "Disponibles",
+    "richiestiNonDisponibili": "No disponibles",
+    "richiestiInEsaurimento": "Stock bajo"
+  },
+
+  "confirm": "Confirmar",
+  "reset_filters": "Restablecer filtros",
+  "active_filters": "Filtros activos",
+  "no_filters": "Ningún filtro aplicado"
+}

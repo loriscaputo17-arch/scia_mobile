@@ -1,3 +1,6 @@
+import "../global.css";
+import "@/app/i18n";
+
 import { Stack } from "expo-router";
 import { Provider } from "react-redux";
 import { store } from "@/store/store";

@@ -1,0 +1,26 @@
+{
+  "facilities": "Struttura ESWBS",
+  "facilities_search": "Cerca per nome impianto...",
+  "element_not_found": "Elemento non trovato",
+  "system": "Sistemi",
+  "component": "Componenti",
+  "builder": "Costruttore",
+  "image": "Immagine",
+  "motorcycles_hours": "Ore moto",
+  "3D_model": "Modello 3D",
+  "maintenance_status": "Stato manutenzioni",
+  "spare_parts_status": "Stato ricambi",
+  "description": "Descrizione",
+  "details": "Dettagli",
+  "exploded": "Esploso",
+  "technical_diagram": "Schema tecnico",
+  "photographic_notes": "Note fotografiche",
+  "see_history": "Vedi storico",
+  "vocal_notes": "Note vocali",
+  "text_notes": "Note testuali",
+  "plant_filter": "Filtro impianti",
+  "confirm": "Conferma"
+  }
+  
+
+  

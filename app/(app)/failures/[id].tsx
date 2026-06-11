@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   View, Text, ScrollView, TouchableOpacity,
-  ActivityIndicator, Alert, Modal, Pressable,
-  TextInput, Image,
+  ActivityIndicator, Alert, Modal, Pressable, Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -11,13 +10,14 @@ import { RootState } from "@/store/store";
 import api from "@/api/axios";
 import DashboardHeader from "@/components/organisms/DashboardHeader";
 import { useLocalSearchParams, router } from "expo-router";
-import * as ImagePicker from "expo-image-picker";
 import NoteModal from "@/components/organisms/NoteModal";
+import { useDevice } from "@/hooks/useDevice";
 
 // ─── API ──────────────────────────────────────────────────────────────────────
-const getFailures = async (shipId: string, userId: string) => {
-  const res = await api.get(`/failures/getFailures?ship_id=${shipId}&userId=${userId}`);
-  return Array.isArray(res.data.failures) ? res.data.failures : [];
+// Come il web: fetch del SINGOLO guasto per id (niente più scarico di tutta la lista)
+const getFailureById = async (id: string) => {
+  const res = await api.get(`/failures/getFailure/${id}`);
+  return res.data?.failure || null;
 };
 const getPhotos = async (id: string) => {
   const res = await api.get(`/uploadFiles/getPhotos/${id}/failure`);
@@ -31,28 +31,25 @@ const getTexts = async (id: string) => {
   const res = await api.get(`/uploadFiles/getTextNotes/${id}/failure`);
   return res.data.notes || [];
 };
-const uploadPhoto = async (formData: FormData) =>
-  api.post("/uploadFiles/uploadPhoto", formData, { headers: { "Content-Type": "multipart/form-data" } });
-const uploadText = async (payload: any) =>
-  api.post("/uploadFiles/uploadText", payload);
 
 // ─── Gravity color ────────────────────────────────────────────────────────────
 const gColor = (g?: string) => {
   switch (g?.toLowerCase()) {
     case "critica": return "#D0021B";
-    case "alta": return "#F47216";
-    case "media": return "#FFBF25";
-    case "bassa": return "#2DB647";
-    default: return "#6b7280";
+    case "alta":    return "#F47216";
+    case "media":   return "#FFBF25";
+    case "bassa":   return "#2DB647";
+    default:        return "#6b7280";
   }
 };
 
 // ─── Photo History Modal ──────────────────────────────────────────────────────
 function PhotoHistoryModal({ visible, onClose, photos }: { visible: boolean; onClose: () => void; photos: any[] }) {
   const [zoom, setZoom] = useState<string | null>(null);
+  const { isTablet } = useDevice();
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)", justifyContent: "center", padding: 16 }}>
+      <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)", justifyContent: "center", padding: isTablet ? 20 : 16 }}>
         <View style={{ backgroundColor: "#022a52", borderRadius: 16, padding: 20, maxHeight: "80%" }}>
           <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 16 }}>
             <Text style={{ color: "#fff", fontSize: 18, fontWeight: "700" }}>Storico foto</Text>
@@ -64,7 +61,7 @@ function PhotoHistoryModal({ visible, onClose, photos }: { visible: boolean; onC
               : photos.map((p, i) => (
                 <TouchableOpacity key={i} onPress={() => setZoom(p.image_url)}
                   style={{ flexDirection: "row", alignItems: "center", marginBottom: 14 }}>
-                  <Image source={{ uri: p.image_url }} style={{ width: 70, height: 70, borderRadius: 8, marginRight: 12 }} />
+                  <Image source={{ uri: p.image_url }} style={{ width: isTablet ? 90 : 70, height: isTablet ? 90 : 70, borderRadius: 8, marginRight: 12 }} />
                   <View>
                     <Text style={{ color: "#fff" }}>{p.authorDetails?.first_name} {p.authorDetails?.last_name}</Text>
                     <Text style={{ color: "#ffffff80", fontSize: 12 }}>{new Date(p.created_at).toLocaleString()}</Text>
@@ -88,9 +85,10 @@ function PhotoHistoryModal({ visible, onClose, photos }: { visible: boolean; onC
 
 // ─── Text History Modal ───────────────────────────────────────────────────────
 function TextHistoryModal({ visible, onClose, texts }: { visible: boolean; onClose: () => void; texts: any[] }) {
+  const { isTablet } = useDevice();
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)", justifyContent: "center", padding: 16 }}>
+      <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)", justifyContent: "center", padding: isTablet ? 20 : 16 }}>
         <View style={{ backgroundColor: "#022a52", borderRadius: 16, padding: 20, maxHeight: "80%" }}>
           <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 16 }}>
             <Text style={{ color: "#fff", fontSize: 18, fontWeight: "700" }}>Storico testi</Text>
@@ -120,17 +118,16 @@ function TextHistoryModal({ visible, onClose, texts }: { visible: boolean; onClo
 export default function FailureDetailPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const user = useSelector((state: RootState) => state.auth?.user) as any;
+  const { isTablet } = useDevice();
 
   const [failure, setFailure] = useState<any>(null);
-  const [photos, setPhotos] = useState<any[]>([]);
-  const [audios, setAudios] = useState<any[]>([]);
-  const [texts, setTexts] = useState<any[]>([]);
+  const [photos,  setPhotos]  = useState<any[]>([]);
+  const [audios,  setAudios]  = useState<any[]>([]);
+  const [texts,   setTexts]   = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [noteModal, setNoteModal] = useState(false);
+  const [noteModal,  setNoteModal]  = useState(false);
   const [photoModal, setPhotoModal] = useState(false);
-  const [textModal, setTextModal] = useState(false);
-
-  const shipId = user?.teamInfo?.assignedShip?.id;
+  const [textModal,  setTextModal]  = useState(false);
 
   const loadNotes = async () => {
     const [p, a, t] = await Promise.all([
@@ -142,18 +139,14 @@ export default function FailureDetailPage() {
   };
 
   useEffect(() => {
-    if (!id || !user) return;
+    if (!id) return;
     setLoading(true);
-    getFailures(String(shipId), String(user.id))
-      .then((data) => {
-        const f = data.find((item: any) => String(item.id) === String(id));
-        if (!f) Alert.alert("Errore", "Guasto non trovato");
-        setFailure(f || null);
-      })
-      .catch(() => Alert.alert("Errore", "Impossibile caricare il guasto"))
+    getFailureById(String(id))
+      .then((f) => setFailure(f))
+      .catch(() => setFailure(null))
       .finally(() => setLoading(false));
     loadNotes();
-  }, [id, user]);
+  }, [id]);
 
   if (loading) {
     return (
@@ -166,17 +159,30 @@ export default function FailureDetailPage() {
   if (!failure) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "#001c38", alignItems: "center", justifyContent: "center" }}>
-        <Text style={{ color: "#fff" }}>Guasto non trovato</Text>
+        <Ionicons name="warning-outline" size={48} color="#ffffff40" />
+        <Text style={{ color: "#ffffff60", marginTop: 12 }}>Guasto non trovato</Text>
+        <TouchableOpacity onPress={() => router.back()} style={{ marginTop: 16 }}>
+          <Text style={{ color: "#789fd6" }}>← Torna indietro</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     );
   }
 
   let customFields: any[] = [];
-  try { customFields = typeof failure.customFields === "string" ? JSON.parse(failure.customFields) : failure.customFields || []; } catch {}
+  try {
+    customFields = typeof failure.customFields === "string"
+      ? JSON.parse(failure.customFields)
+      : failure.customFields || [];
+  } catch {}
+
+  // Impianto/componente: come il web, fallback su element_model se presente
+  const componentName  = failure.element?.element_model?.LCN_name || failure.component_name;
+  const componentEswbs = failure.element?.element_model?.ESWBS_code || failure.eswbs_code;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#001c38" }}>
-      <View style={{ flex: 1, padding: 16 }}>
+      <View style={{ flex: 1, padding: isTablet ? 24 : 16, alignSelf: "center",
+        width: "100%", maxWidth: isTablet ? 1100 : "100%" }}>
         <DashboardHeader />
 
         {/* Header */}
@@ -184,7 +190,9 @@ export default function FailureDetailPage() {
           <TouchableOpacity onPress={() => router.back()} style={{ marginRight: 4 }}>
             <Ionicons name="chevron-back" size={24} color="#fff" />
           </TouchableOpacity>
-          <Text style={{ color: "#fff", fontSize: 18, fontWeight: "700", flex: 1 }} numberOfLines={2}>{failure.title}</Text>
+          <Text style={{ color: "#fff", fontSize: isTablet ? 22 : 18, fontWeight: "700", flex: 1 }} numberOfLines={2}>
+            {failure.title}
+          </Text>
           {failure.gravity && (
             <View style={{ backgroundColor: gColor(failure.gravity) + "33", borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4 }}>
               <Text style={{ color: gColor(failure.gravity), fontSize: 12, fontWeight: "700", textTransform: "capitalize" }}>{failure.gravity}</Text>
@@ -197,9 +205,10 @@ export default function FailureDetailPage() {
           </TouchableOpacity>
         </View>
 
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: isTablet ? 64 : 32 }}>
+
           {/* Info principali */}
-          <View style={{ backgroundColor: "#022a52", borderRadius: 12, padding: 16, marginBottom: 12 }}>
+          <View style={{ backgroundColor: "#022a52", borderRadius: 12, padding: isTablet ? 20 : 16, marginBottom: 12 }}>
             {failure.userExecutionData?.first_name && (
               <View style={{ marginBottom: 14 }}>
                 <Text style={{ color: "#789fd6", fontSize: 13, marginBottom: 4 }}>Utente</Text>
@@ -212,17 +221,36 @@ export default function FailureDetailPage() {
                 <Text style={{ color: "#fff", fontSize: 15 }}>{failure.date}</Text>
               </View>
             )}
-            {failure.description && (
-              <View style={{ marginBottom: 4 }}>
+            {failure.description ? (
+              <View>
                 <Text style={{ color: "#789fd6", fontSize: 13, marginBottom: 4 }}>Descrizione</Text>
                 <Text style={{ color: "#fff", fontSize: 14, lineHeight: 22 }}>{failure.description}</Text>
               </View>
-            )}
+            ) : null}
           </View>
+
+          {/* Impianto / Componente (come il web) */}
+          {(componentEswbs || componentName) && (
+            <TouchableOpacity
+              onPress={() => failure.element_id && router.push(`/(app)/impianti/${failure.element_id}` as any)}
+              disabled={!failure.element_id}
+              style={{ backgroundColor: "#022a52", borderRadius: 12, padding: isTablet ? 20 : 16,
+                marginBottom: 12, flexDirection: "row", alignItems: "center",
+                opacity: failure.element_id ? 1 : 0.85 }}>
+              <View style={{ flex: 1 }}>
+                <Text style={{ color: "#789fd6", fontSize: 13, marginBottom: 4 }}>Impianto / Componente</Text>
+                {componentEswbs && (
+                  <Text style={{ color: "#789fd6", fontSize: 13, fontFamily: "monospace" }}>{componentEswbs}</Text>
+                )}
+                <Text style={{ color: "#fff", fontSize: 15, marginTop: 2 }} numberOfLines={2}>{componentName || "—"}</Text>
+              </View>
+              {failure.element_id && <Ionicons name="chevron-forward" size={18} color="#ffffff80" />}
+            </TouchableOpacity>
+          )}
 
           {/* Custom fields */}
           {customFields.length > 0 && (
-            <View style={{ backgroundColor: "#022a52", borderRadius: 12, padding: 16, marginBottom: 12 }}>
+            <View style={{ backgroundColor: "#022a52", borderRadius: 12, padding: isTablet ? 20 : 16, marginBottom: 12 }}>
               {customFields.map((f: any, i: number) => (
                 <View key={i} style={{ marginBottom: 12 }}>
                   <Text style={{ color: "#ee81e5", fontSize: 13, marginBottom: 4 }}>{f.name}</Text>
@@ -233,7 +261,7 @@ export default function FailureDetailPage() {
           )}
 
           {/* Note fotografiche */}
-          <View style={{ backgroundColor: "#022a52", borderRadius: 12, padding: 16, marginBottom: 12 }}>
+          <View style={{ backgroundColor: "#022a52", borderRadius: 12, padding: isTablet ? 20 : 16, marginBottom: 12 }}>
             <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}>
               <Text style={{ color: "#789fd6", fontSize: 15, fontWeight: "600", flex: 1 }}>Note fotografiche</Text>
               <TouchableOpacity onPress={() => setPhotoModal(true)}>
@@ -243,7 +271,7 @@ export default function FailureDetailPage() {
             {photos.length === 0
               ? <Text style={{ color: "#ffffff60", fontSize: 13 }}>Nessuna foto</Text>
               : <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Image source={{ uri: photos[0].image_url }} style={{ width: 70, height: 70, borderRadius: 8, marginRight: 12 }} />
+                  <Image source={{ uri: photos[0].image_url }} style={{ width: isTablet ? 90 : 70, height: isTablet ? 90 : 70, borderRadius: 8, marginRight: 12 }} />
                   <View>
                     <Text style={{ color: "#fff" }}>{photos[0].authorDetails?.first_name} {photos[0].authorDetails?.last_name}</Text>
                     <Text style={{ color: "#ffffff80", fontSize: 12 }}>{new Date(photos[0].created_at).toLocaleString()}</Text>
@@ -254,7 +282,7 @@ export default function FailureDetailPage() {
           </View>
 
           {/* Note audio */}
-          <View style={{ backgroundColor: "#022a52", borderRadius: 12, padding: 16, marginBottom: 12 }}>
+          <View style={{ backgroundColor: "#022a52", borderRadius: 12, padding: isTablet ? 20 : 16, marginBottom: 12 }}>
             <Text style={{ color: "#789fd6", fontSize: 15, fontWeight: "600", marginBottom: 8 }}>Note vocali</Text>
             {audios.length === 0
               ? <Text style={{ color: "#ffffff60", fontSize: 13 }}>Nessuna nota vocale</Text>
@@ -274,7 +302,7 @@ export default function FailureDetailPage() {
           </View>
 
           {/* Note testo */}
-          <View style={{ backgroundColor: "#022a52", borderRadius: 12, padding: 16, marginBottom: 24 }}>
+          <View style={{ backgroundColor: "#022a52", borderRadius: 12, padding: isTablet ? 20 : 16, marginBottom: 24 }}>
             <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}>
               <Text style={{ color: "#789fd6", fontSize: 15, fontWeight: "600", flex: 1 }}>Note testuali</Text>
               <TouchableOpacity onPress={() => setTextModal(true)}>
@@ -303,7 +331,7 @@ export default function FailureDetailPage() {
         onSuccess={loadNotes}
       />
       <PhotoHistoryModal visible={photoModal} onClose={() => setPhotoModal(false)} photos={photos} />
-      <TextHistoryModal visible={textModal} onClose={() => setTextModal(false)} texts={texts} />
+      <TextHistoryModal  visible={textModal}  onClose={() => setTextModal(false)}  texts={texts} />
     </SafeAreaView>
   );
 }

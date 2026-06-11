@@ -19,6 +19,21 @@
   "vocal_notes": "Vocal notes",
   "text_notes": "Text notes",
   "plant_filter": "Plant filter",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "maintenances": "Maintenances",
+   "view_maintenances": "View maintenances",
+   "search_by_facility_name": "Search by facility name…",
+   "no_results": "No results",
+   "tab_info": "Info",
+"tab_maintenances": "Maintenance",
+"tab_spares": "Spare parts",
+"tab_notes": "Notes",
+"tab_components": "Components",
+"downloads": "Downloads",
+"no_linked_maintenance": "No linked maintenance",
+"no_linked_spare": "No linked spare part",
+"photo_notes": "Photo notes",
+"no_notes_available": "No notes available",
+"no_child_component": "No child component"
 }
   

@@ -87,7 +87,7 @@ const Header = ({ navigation }: { navigation?: any }) => {
       iconProps: { name: "schema" },
       onClick: () => {
         setShowMenu(false);
-        router.push("/dashboard/impianti");
+        router.push("/impianti");
       },
     },
     {
@@ -96,7 +96,7 @@ const Header = ({ navigation }: { navigation?: any }) => {
       iconProps: { name: "shopping-cart" },
       onClick: () => {
         setShowMenu(false);
-        router.push("/dashboard/carrello");
+        router.push("/cart");
       },
     },
     {
@@ -105,7 +105,7 @@ const Header = ({ navigation }: { navigation?: any }) => {
       iconProps: { name: "customerservice" },
       onClick: () => {
         setShowMenu(false);
-        router.push("/dashboard/assistenza_remota");
+        router.push("/remoteAssistance");
       },
     },
     {
@@ -114,7 +114,7 @@ const Header = ({ navigation }: { navigation?: any }) => {
       iconProps: { name: "settings" },
       onClick: () => {
         setShowMenu(false);
-        router.push("/dashboard/impostazioni");
+        router.push("/settings");
       },
     },
   ];

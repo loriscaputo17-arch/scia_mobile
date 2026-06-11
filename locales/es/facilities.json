@@ -19,6 +19,22 @@
   "vocal_notes": "Notas vocales",
   "text_notes": "Notas de texto",
   "plant_filter": "Filtro de planta",
-  "confirm": "Confirmar"
+  "confirm": "Confirmar",
+  "maintenances": "Mantenimientos",
+  "view_maintenances": "Ver mantenimientos",
+  "search_by_facility_name": "Buscar por nombre de instalación…",
+  "no_results": "Sin resultados",
+  "tab_info": "Info",
+"tab_maintenances": "Mantenimiento",
+"tab_spares": "Repuestos",
+"tab_notes": "Notas",
+"tab_components": "Componentes",
+"downloads": "Descargas",
+"no_linked_maintenance": "Ningún mantenimiento vinculado",
+"no_linked_spare": "Ningún repuesto vinculado",
+"photo_notes": "Notas fotográficas",
+"no_notes_available": "Ninguna nota disponible",
+"no_child_component": "Ningún componente hijo"
+
 }
   

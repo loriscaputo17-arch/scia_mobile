@@ -19,8 +19,20 @@
   "vocal_notes": "Note vocali",
   "text_notes": "Note testuali",
   "plant_filter": "Filtro impianti",
-  "confirm": "Conferma"
+  "confirm": "Conferma",
+  "maintenances": "Manutenzioni",
+    "view_maintenances": "Vedi manutenzioni",
+    "search_by_facility_name": "Cerca per nome impianto…",
+    "no_results": "Nessun risultato",
+    "tab_info": "Info",
+  "tab_maintenances": "Manutenzioni",
+  "tab_spares": "Ricambi",
+  "tab_notes": "Note",
+  "tab_components": "Componenti",
+  "downloads": "Download",
+  "no_linked_maintenance": "Nessuna manutenzione collegata",
+  "no_linked_spare": "Nessun ricambio collegato",
+  "photo_notes": "Note fotografiche",
+  "no_notes_available": "Nessuna nota disponibile",
+  "no_child_component": "Nessun componente figlio"
   }
-  
-
-  

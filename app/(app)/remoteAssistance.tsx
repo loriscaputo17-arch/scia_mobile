@@ -1,8 +1,9 @@
-import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
+import { View, Text, TouchableOpacity, Alert, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import api from "@/api/axios";
 import DashboardHeader from "@/components/organisms/DashboardHeader";
+import { useTranslation } from "@/app/i18n";
 
 const loginCareAr = async (payload: { email: string; password: string }) => {
   const res = await api.post("/assistance/loginCareAr", payload);
@@ -10,6 +11,12 @@ const loginCareAr = async (payload: { email: string; password: string }) => {
 };
 
 export default function RemoteAssistancePage() {
+
+  const { t } = useTranslation("remote_assistance");
+
+  const { width } = useWindowDimensions();
+  const isTablet = width >= 768;
+
   const handleStartDevice = async () => {
     try {
       await loginCareAr({ email: "tuo@email.it", password: "tuapassword" });
@@ -25,33 +32,82 @@ export default function RemoteAssistancePage() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#001c38" }}>
-      <View style={{ flex: 1, padding: 16 }}>
+      <View
+        style={{
+          flex: 1,
+          padding: isTablet ? 24 : 16,
+          alignSelf: "center",
+          width: "100%",
+          maxWidth: isTablet ? 900 : "100%",
+        }}
+      >
         <DashboardHeader />
 
-        <Text style={{ color: "#fff", fontSize: 22, fontWeight: "700", marginTop: 16, marginBottom: 16 }}>
-          Assistenza remota
-        </Text>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#022a52",
+            borderRadius: 12,
+            padding: isTablet ? 40 : 24,
+            marginTop: 20,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Ionicons
+            name="headset-outline"
+            size={isTablet ? 120 : 100}
+            color="#789fd6"
+          />
 
-        <View style={{ flex: 1, backgroundColor: "#022a52", borderRadius: 12, padding: 24, alignItems: "center", justifyContent: "center" }}>
-          <Ionicons name="headset-outline" size={100} color="#789fd6" />
-
-          <Text style={{ color: "#fff", textAlign: "center", fontSize: 15, marginVertical: 24, maxWidth: 280, lineHeight: 22 }}>
-            Avvia una sessione di assistenza remota con il supporto tecnico
+          <Text
+            style={{
+              color: "#fff",
+              textAlign: "center",
+              fontSize: isTablet ? 17 : 15,
+              marginVertical: 24,
+              maxWidth: isTablet ? 420 : 280,
+              lineHeight: 22,
+            }}
+          >
+            {t("remote_assistance_title")}
           </Text>
 
-          <View style={{ flexDirection: "row", gap: 12, width: "100%" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 12,
+              width: isTablet ? 420 : "100%",
+            }}
+          >
             <TouchableOpacity
               onPress={handleStartDevice}
-              style={{ flex: 1, backgroundColor: "#ffffff10", borderRadius: 8, padding: 16, alignItems: "center" }}
+              style={{
+                flex: 1,
+                backgroundColor: "#ffffff10",
+                borderRadius: 8,
+                padding: 16,
+                alignItems: "center",
+              }}
             >
-              <Text style={{ color: "#fff", fontWeight: "700", fontSize: 15 }}>Avvia dispositivo</Text>
+              <Text style={{ color: "#fff", fontWeight: "700", fontSize: 15 }}>
+                {t("remote_assistance_button1")}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               onPress={handleStartViewer}
-              style={{ flex: 1, backgroundColor: "#789fd6", borderRadius: 8, padding: 16, alignItems: "center" }}
+              style={{
+                flex: 1,
+                backgroundColor: "#789fd6",
+                borderRadius: 8,
+                padding: 16,
+                alignItems: "center",
+              }}
             >
-              <Text style={{ color: "#fff", fontWeight: "700", fontSize: 15 }}>Avvia viewer</Text>
+              <Text style={{ color: "#fff", fontWeight: "700", fontSize: 15 }}>
+                {t("remote_assistance_button2")}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
